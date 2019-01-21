@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "target": "es5",
+    "lib": [ "es2015", "es2016", "dom" ],
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [ "react", "react-router", "react-router-dom", "node", "jest", "prismic-dom" ],
+    "baseUrl": "."
+  },
+  "exclude": [
+    "build"
+  ]
+}
