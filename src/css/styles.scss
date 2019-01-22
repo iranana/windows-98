@@ -1,3 +1,14 @@
+@font-face {
+  font-family: "MS Sans";
+  src: url("../fonts/ms-sans-serif.ttf");
+  font-size: 12px;
+}
+
+body {
+  font-family: "MS Sans";
+  -webkit-font-smoothing: none;
+}
+
 #wrapper {
   width: 1024px;
   height: 768px;
@@ -35,14 +46,23 @@
 
 #start-menu {
 
+  button {
+    text-indent: -999px;
+    background: url("../img/layout/start_button.png") no-repeat;
+    background-size: contain;
+    width: 50px;
+    height: 18px;
+    @include dialog();
+  }
+
   nav {
     display: none;
-    height: 235px;
+    height: 300px;
     position: absolute;
     bottom: 28px;
     left: 4px;
     width: 160px;
-    background: url("../img/start-menu-banner.png") top left no-repeat;
+    background: url("../img/layout/start_menu_banner.png") bottom left no-repeat;
     @include dialog();
 
     &.open {
@@ -61,10 +81,25 @@
     }
 
     li {
+      color: #000;
+      font-size: 12px;
       box-sizing: border-box;
       position: relative;
       width: 100%;
       padding: 5px 10px;
+
+      img {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+        height: auto;
+        margin-right: 5px;
+
+        + span {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
 
       ul {
         display: none;
@@ -86,5 +121,34 @@
       top: 0;
       left: calc(100% - 4px);
     }
+  }
+}
+
+.desktop-icon {
+  display: inline-block;
+  width: 36px;
+  margin: 20px;
+
+  img {
+    width: 24px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  span {
+    font-size: 12px;
+  }
+}
+
+.dialog {
+  position: absolute;
+  display: none;
+  width: 500px;
+  height: 300px;
+  @include dialog();
+
+  &.open {
+    display: block;
   }
 }

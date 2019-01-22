@@ -1,6 +1,7 @@
 import React from "react";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
+import * as Icons from "../../img/icons/*.ico"
 
 @observer
 export default class StartMenu extends React.Component<any> {
@@ -21,7 +22,7 @@ export default class StartMenu extends React.Component<any> {
         <nav className={this.open ? "open" : undefined}>
           <ul>
             <li onMouseDown={e => e.preventDefault()}>
-              <span>P</span>rograms
+              <img src={Icons.directory_program_group} /> <span>P</span>rograms
               <ul className="sub-menu">
                 <li onMouseDown={e => e.preventDefault()}>Accessories</li>
                 <li onMouseDown={e => e.preventDefault()}>StartUp</li>
@@ -29,22 +30,22 @@ export default class StartMenu extends React.Component<any> {
               </ul>
             </li>
             <li onMouseDown={e => e.preventDefault()}>
-              <span>D</span>ocuments
+              <img src={Icons.directory_favorites} /> <span>D</span>ocuments
             </li>
             <li onMouseDown={e => e.preventDefault()}>
-              <span>S</span>ettings
+              <img src={Icons.gears} /> <span>S</span>ettings
             </li>
             <li onMouseDown={e => e.preventDefault()}>
-              <span>F</span>ind
+              <img src={Icons.search_file} /> <span>F</span>ind
             </li>
             <li onMouseDown={e => e.preventDefault()}>
-              <span>H</span>elp
+              <img src={Icons.help_book_big} /> <span>H</span>elp
             </li>
             <li onMouseDown={e => e.preventDefault()}>
-              <span>R</span>un
+              <img src={Icons.executable_gear} /> <span>R</span>un
             </li>
             <li onMouseDown={e => e.preventDefault()}>
-              Sh<span>u</span>t Down...
+              <img src={Icons.shut_down_with_computer} /> Sh<span>u</span>t Down...
             </li>
           </ul>
         </nav>
