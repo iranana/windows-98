@@ -75,19 +75,19 @@ export default class Store {
   }
 }
 
-// don't be a dumbass
 function searchTree (items, id) {
-  let match;
-  items.some(item => {
-    if (item.id === id) {
-      match = item;
-      return match;
+  //console.log(toJS(items))
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].id === id) {
+      return items[i];
     } else {
-      if (item.children) {
-        match = searchTree(item.children, id)
+      if (items[i].children) {
+        let match = searchTree(items[i].children, id)
+        if (match) {
+          return match;
+        }
       }
-      return match;
     }
-  });
-  return match;
+  }
 }
