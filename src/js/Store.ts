@@ -1,12 +1,13 @@
 import { observable, action, toJS } from "mobx";
+import uuidv1 from "uuid/v1";
 
 interface Folder {
   type: "folder";
   id: number;
   name: string;
-  open: boolean;
   minimised: boolean;
-  children: Array<Folder | File>
+  children: Array<Folder | File>;
+  parent: number;
 }
 
 interface File {
@@ -15,69 +16,124 @@ interface File {
   name: string;
   open: boolean;
   minimised: boolean;
+  parent: number;
 }
 
 export default class Store {
+  @observable explorerInstances: Array<{ id: string, stack: Folder[] }> = [];
+  @observable explorerState = [];
   @observable desktop: Array<Folder | File> = [
     {
       type: "folder",
       id: 1,
       name: "test",
-      open: false,
       minimised: false,
+      parent: null,
       children: [
         {
           type: "file",
           id: 2,
           name: "xxx.jpg",
           open: false,
-          minimised: false
+          minimised: false,
+          parent: 1
         },
         {
           type: "folder",
           id: 3,
           name: "secret",
-          open: false,
           minimised: false,
-          children: []
+          children: [],
+          parent: 1
         },
         {
           type: "folder",
           id: 5,
           name: "wow wow",
-          open: false,
           minimised: false,
-          children: []
+          parent: 1,
+          children: [
+            {
+              type: "folder",
+              id: 99,
+              name: "woriguowiut",
+              minimised: false,
+              children: [],
+              parent: 5
+            }
+          ]
         }
       ]
     },
     {
-      type: "file",
+      type: "folder",
       id: 4,
-      name: "picture.png",
-      open: false,
+      name: "picturess xxx",
       minimised: false,
+      parent: null,
+      children: [
+        {
+          type: "folder",
+          id: 88,
+          name: "test folder nein nein nein!",
+          minimised: false,
+          children: [],
+          parent: 4
+        }
+      ]
     }
   ]
 
-  @action openFolder (id) {
-    const item = searchTree(this.desktop, id);
-    item.open = true;
+  @action createNew (item) {
+    const existingInstance = this.explorerInstances.find(instance => instance.id === item.id);
+
+    if (existingInstance) {
+      return false
+    }
+
+    this.explorerInstances.push({
+      id: item.id,
+      stack: [ item ]
+    });
   }
 
-  @action closeFolder (id) {
-    const item = searchTree(this.desktop, id);
-    item.open = false;
+  @action openFolder (item, instance) {
+    instance.stack.push(item);
+  }
 
-    item.children.forEach(child => {
-      child.open = false;
-    })
+  @action closeExplorer (instanceId) {
+    const instance = this.explorerInstances.find(instance => instance.id === instanceId);
+    this.explorerInstances.splice(this.explorerInstances.indexOf(instance), 1);
+  }
+
+  @action goBack (instanceId) {
+    const instance = this.explorerInstances.find(instance => instance.id === instanceId);
+    instance.stack.pop();
+  }
+
+  // todo fix the mutations
+  @action moveFolder (folderToMove, targetFolderId) {
+    let targetFolder = searchTree(this.desktop, parseInt(targetFolderId));
+
+    if (targetFolder) {
+      let clone = toJS(folderToMove);
+      const oldParent = folderToMove.parent;
+
+      clone.parent = targetFolder.id;
+      targetFolder.children.push(clone);
+
+      if (oldParent) {
+        const parent = searchTree(this.desktop, oldParent);
+        parent.children.splice(parent.children.indexOf(folderToMove), 1);
+      } else {
+        const root = this.desktop.find(item => item.id === folderToMove.id);
+        this.desktop.splice(this.desktop.indexOf(root), 1);
+      }
+    }
   }
 }
 
-function searchTree (items, id) {
-  //console.log(toJS(items))
-
+export function searchTree (items, id) {
   for (let i = 0; i < items.length; i++) {
     if (items[i].id === id) {
       return items[i];

@@ -128,6 +128,11 @@ body {
   display: inline-block;
   width: 36px;
   margin: 20px;
+  position: relative;
+
+  &.react-draggable-dragging {
+    z-index: 9999;
+  }
 
   img {
     width: 24px;
@@ -146,9 +151,14 @@ body {
   display: none;
   width: 500px;
   height: 300px;
+  z-index: 999;
   @include dialog();
 
   &.open {
     display: block;
+  }
+
+  &:focus {
+    z-index: 9999;
   }
 }
