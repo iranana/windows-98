@@ -54,7 +54,7 @@ export default class DraggableContainer extends React.Component<{ store?: any }>
   render () {
     return (
       <Draggable onDrag={this.handleDrag} onStart={this.handleStart} onStop={this.handleStop}>
-        <div>{this.props.children}</div>
+        <div style={{ display: "inline-block" }}>{this.props.children}</div>
       </Draggable>
     )
   }

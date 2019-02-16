@@ -1,5 +1,6 @@
 import { observable, action, toJS } from "mobx";
-import uuidv1 from "uuid/v1";
+import image2base64 from "image-to-base64";
+import * as Files from "../img/files/*.jpg";
 
 interface Folder {
   type: "folder";
@@ -34,8 +35,8 @@ export default class Store {
         {
           type: "image",
           id: 2,
-          name: "testImage.jpg",
-          url: "./dist/files/testImage.jpg",
+          name: "testImage.jpg", 
+          url: Files.testImage,
           open: false,
           minimised: false,
           parent: 1
