@@ -11,12 +11,13 @@ interface Folder {
 }
 
 interface File {
-  type: "file";
+  type: "file" | "image";
   id: number;
   name: string;
   open: boolean;
   minimised: boolean;
   parent: number;
+  url: string;
 }
 
 export default class Store {
@@ -26,14 +27,15 @@ export default class Store {
     {
       type: "folder",
       id: 1,
-      name: "test",
+      name: "Carrots",
       minimised: false,
       parent: null,
       children: [
         {
-          type: "file",
+          type: "image",
           id: 2,
-          name: "xxx.jpg",
+          name: "testImage.jpg",
+          url: "./dist/files/testImage.jpg",
           open: false,
           minimised: false,
           parent: 1
@@ -41,7 +43,7 @@ export default class Store {
         {
           type: "folder",
           id: 3,
-          name: "secret",
+          name: "Cats",
           minimised: false,
           children: [],
           parent: 1
@@ -49,14 +51,14 @@ export default class Store {
         {
           type: "folder",
           id: 5,
-          name: "wow wow",
+          name: "Cucumbers",
           minimised: false,
           parent: 1,
           children: [
             {
               type: "folder",
               id: 99,
-              name: "woriguowiut",
+              name: "Cucumber Seeds",
               minimised: false,
               children: [],
               parent: 5
@@ -68,14 +70,14 @@ export default class Store {
     {
       type: "folder",
       id: 4,
-      name: "picturess xxx",
+      name: "Pictures",
       minimised: false,
       parent: null,
       children: [
         {
           type: "folder",
           id: 88,
-          name: "test folder nein nein nein!",
+          name: "Cat Pictures",
           minimised: false,
           children: [],
           parent: 4

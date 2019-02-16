@@ -1,15 +1,17 @@
 import React from "react";
 import Folder from "./components/Folder";
+import DraggableContainer from "./components/DraggableContainer";
+import File from "./components/File";
 
 export const directoryFactory = ({ items, newInstance, instance } : { items: any, newInstance?: boolean, instance: any }) => {
-  return items.map(item => {
+  return items.map((item, i) => {
     switch (item.type) {
       case "folder":
-        return (
-          <Folder item={item} newInstance={newInstance} instance={instance} />
-        )
+        return <DraggableContainer><Folder key={i} item={item} newInstance={newInstance} instance={instance} /></DraggableContainer>
+      case "image":
+        return <DraggableContainer><File item={item} /></DraggableContainer>
       case "file":
-        return <span>{item.name}</span>
+        return <span key={i}>TODO files</span>
     }
   })
 }

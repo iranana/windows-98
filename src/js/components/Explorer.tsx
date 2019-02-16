@@ -23,15 +23,15 @@ export default class Explorer extends React.Component<{ store?: any, instance: a
   render () {
     const currentFolder = this.props.instance.stack[this.props.instance.stack.length - 1];
 
-    const renderTree = (item) => (
-      <>
+    const renderTree = (item, i) => (
+      <React.Fragment key={i}>
       <li onDoubleClick={() => this.open(item)}>{item.name}</li>
       {item.children && (
         <ul>
-          {item.children.map(item => renderTree(item))}
+          {item.children.map((item, j) => renderTree(item, j))}
         </ul>
       )}
-      </>
+      </React.Fragment>
     )
 
     if (currentFolder) {
@@ -39,8 +39,8 @@ export default class Explorer extends React.Component<{ store?: any, instance: a
         <Draggable>
           <div tabIndex={0} className={`dialog ${currentFolder ? "open" : ""}`}>
             <ul>
-              {this.props.store.desktop.map(item => (
-                renderTree(item)
+              {this.props.store.desktop.map((item, i) => (
+                renderTree(item, i)
               ))}
             </ul>
             <p onClick={this.close}>Close</p>

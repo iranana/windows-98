@@ -19,8 +19,8 @@ export default class App extends React.Component<any> {
       <main id="wrapper">
         <Provider store={this.store}>
           <>
-            {this.store.explorerInstances.map(instance => (
-              <Explorer instance={instance} />
+            {this.store.explorerInstances.map((instance, i) => (
+              <Explorer key={i} instance={instance} />
             ))}
             <Desktop />
             <TaskBar />
