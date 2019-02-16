@@ -8,6 +8,7 @@ body {
   font-family: "MS Sans";
   -webkit-font-smoothing: none;
   margin: 0;
+  font-size: 12px;
 }
 
 #wrapper {
@@ -147,15 +148,75 @@ body {
   }
 }
 
-.dialog {
+.explorer-dialog {
+  display: flex;
+  position: absolute;
+  z-index: 999;
   @include dialog();
 
-  &.open {
-    display: block;
+  &.focussed {
+    z-index: 9999;
   }
 
-  &:focus {
-    z-index: 9999;
+  header {
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to right, #020b87, #0f83cf);
+
+    p {
+      margin: 0;
+      color: #fff;
+    }
+
+    .explorer-dialog-controls {
+
+    }
+  }
+
+  // body
+  .explorer-body {
+    display: flex;
+    height: calc(100% - 25px);
+    box-sizing: border-box;
+    padding: 4px;
+  }
+
+  .explorer-folder-tree {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 200px;
+    background: #fff;
+    border: 1px solid #7d7d7d;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+
+      }
+
+      ul {
+        padding-left: 15px;
+      }
+    }
+  }
+
+  .explorer-folder-contents {
+    flex-grow: 1;
+    background: #fff;
+    margin-left: 4px;
+    border: 1px solid #7d7d7d;
+  }
+
+  .explorer-item {
+    position: relative;
+
+    &.react-draggable-dragging {
+      z-index: 99999;
+    }
   }
 }
 
@@ -164,9 +225,13 @@ body {
 
   > div {
     height: 100%;
-    overflow: hidden;
+
+    &:focus {
+      z-index: 9999;
+    }
   }
 }
+
 .react-resizable-handle {
   position: absolute;
   width: 20px;
@@ -180,9 +245,4 @@ body {
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
-}
-
-.explorer-dialog {
-  position: absolute;
-  z-index: 9999;
 }

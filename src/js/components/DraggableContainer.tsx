@@ -11,7 +11,7 @@ export default class DraggableContainer extends React.Component<{ store?: any }>
   @observable dragged: boolean = false;
 
   handleStart = (e, ui) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
   } 
 
   handleDrag = () => {
@@ -28,8 +28,8 @@ export default class DraggableContainer extends React.Component<{ store?: any }>
 
       const targetElements = document.elementsFromPoint(e.clientX, e.clientY);
       const validFolder = targetElements.find(element => element.classList.contains('folder') && element !== ui.node.childNodes[0]) as HTMLElement;
-      const validDirectory = targetElements.find((element: HTMLElement) => element.classList.contains('folder-contents') && element.dataset.folder !== folderId && element.dataset.folder !== parentId) as HTMLElement;
-      const directory = targetElements.find((element: HTMLElement) => element.classList.contains("folder-contents"));
+      const validDirectory = targetElements.find((element: HTMLElement) => element.classList.contains('explorer-folder-contents') && element.dataset.folder !== folderId && element.dataset.folder !== parentId) as HTMLElement;
+      const directory = targetElements.find((element: HTMLElement) => element.classList.contains("explorer-folder-contents"));
       const desktop = targetElements.find(element => element.id === "desktop");
 
       let thisFolder = searchTree(this.props.store.desktop, parseInt(folderId));
@@ -47,13 +47,12 @@ export default class DraggableContainer extends React.Component<{ store?: any }>
       if (!directory && desktop) {
         console.log('TODO desktop drop');
       }
-
     }    
   }
 
   render () {
     return (
-      <Draggable onDrag={this.handleDrag} onStart={this.handleStart} onStop={this.handleStop}>
+      <Draggable defaultClassName={`explorer-item react-draggable`} onDrag={this.handleDrag} onStart={this.handleStart} onStop={this.handleStop}>
         <div style={{ display: "inline-block" }}>{this.props.children}</div>
       </Draggable>
     )

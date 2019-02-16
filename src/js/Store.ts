@@ -22,7 +22,7 @@ interface File {
 }
 
 export default class Store {
-  @observable explorerInstances: Array<{ id: string, stack: Folder[] }> = [];
+  @observable explorerInstances: Array<{ id: string, stack: Folder[], inFocus: boolean, minimized: boolean, maximized: boolean }> = [];
   @observable explorerState = [];
   @observable desktop: Array<Folder | File> = [
     {
@@ -91,12 +91,15 @@ export default class Store {
     const existingInstance = this.explorerInstances.find(instance => instance.id === item.id);
 
     if (existingInstance) {
-      return false
+      //return false
     }
 
     this.explorerInstances.push({
       id: item.id,
-      stack: [ item ]
+      stack: [ item ],
+      inFocus: false,
+      minimized: false,
+      maximized: false
     });
   }
 
@@ -104,14 +107,17 @@ export default class Store {
     instance.stack.push(item);
   }
 
-  @action closeExplorer (instanceId) {
-    const instance = this.explorerInstances.find(instance => instance.id === instanceId);
+  @action closeExplorer (instance) {
     this.explorerInstances.splice(this.explorerInstances.indexOf(instance), 1);
   }
 
-  @action goBack (instanceId) {
-    const instance = this.explorerInstances.find(instance => instance.id === instanceId);
+  @action goBack (instance) {
     instance.stack.pop();
+  }
+
+  @action setInstanceFocus (instance) {
+    this.explorerInstances.forEach(inst => inst !== instance ? inst.inFocus = false : null);
+    instance.inFocus = true;
   }
 
   // todo fix the mutations
@@ -142,7 +148,7 @@ export function searchTree (items, id) {
       return items[i];
     } else {
       if (items[i].children) {
-        let match = searchTree(items[i].children, id)
+        const match = searchTree(items[i].children, id)
         if (match) {
           return match;
         }

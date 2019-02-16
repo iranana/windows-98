@@ -8,11 +8,11 @@ export const directoryFactory = ({ items, newInstance, instance } : { items: any
   return items.map((item, i) => {
     switch (item.type) {
       case "folder":
-        return <DraggableContainer><Folder key={i} item={item} newInstance={newInstance} instance={instance} /></DraggableContainer>
+        return <DraggableContainer key={item.id}><Folder key={i} item={item} newInstance={newInstance} instance={instance} /></DraggableContainer>
       case "image":
-        return <DraggableContainer><Image item={item} /></DraggableContainer>
+        return <DraggableContainer key={item.id}><Image item={item} /></DraggableContainer>
       case "file":
-        return <DraggableContainer><File item={item} /></DraggableContainer>
+        return <DraggableContainer key={item.id}><File item={item} /></DraggableContainer>
     }
   })
 }
