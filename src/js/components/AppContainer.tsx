@@ -17,7 +17,7 @@ export default class AppContainer extends React.Component<IProps> {
     const $App: React.StatelessComponent<any> | React.ComponentClass<any> = this.props.appInstance.app;
 
     return (
-      <Draggable defaultClassName={`explorer-dialog react-draggable ${this.props.appInstance.inFocus ? "focussed" : ""}`}>
+      <Draggable defaultPosition={{x: (this.props.store.appInstances.length * 50), y: (this.props.store.appInstances.length * 50)}} cancel={".draggable-cancel"} defaultClassName={`explorer-dialog react-draggable ${this.props.appInstance.inFocus ? "focussed" : ""}`}>
         <div onClick={() => this.props.store.focusAppInstance(this.props.appInstance)}>
           <header>
             <p>{this.props.appInstance.name}</p>

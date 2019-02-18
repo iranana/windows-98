@@ -3,6 +3,7 @@ import { observer, inject } from "mobx-react";
 import { action, observable } from "mobx";
 import Store from "../Store";
 import { ExplorerInstance } from "../Types";
+import * as Icons from "../../img/icons/*.ico";
 
 type IProps = {
   store?: Store, 
@@ -21,7 +22,7 @@ export default class FolderTree extends React.Component<IProps> {
       case "folder":
         this.props.store.openFolder(item, this.props.explorerInstance);
         break;
-      case "app":
+      case "appShortcut":
         item.action();
         break;
     } 
@@ -38,7 +39,10 @@ export default class FolderTree extends React.Component<IProps> {
       <>
         <li>
           {children && children.length ? <a onClick={this.toggleExpand}>+</a> : null} 
-          <span onDoubleClick={(e) => this.open(e, this.props.item)}>{this.props.item.name}</span>
+          <span onDoubleClick={(e) => this.open(e, this.props.item)}>
+            <img draggable={false} src={this.props.item.icon ? this.props.item.icon : this.expanded ? Icons.directory_open : Icons.directory_closed} style={{ maxWidth: "24px", height: "auto" }} />
+            {this.props.item.name}
+          </span>
           {children && (
             <ul style={{ display: this.expanded ? "block" : "none" }}>
               {children.map((item, j) => <FolderTree item={item} explorerInstance={this.props.explorerInstance} key={j} />)}

@@ -26,8 +26,8 @@ export default class Folder extends React.Component<IProps> {
   render () {
     return (
       <a tabIndex={0} onDoubleClick={this.open} data-id={this.props.item.id} data-parent={this.props.item.parent} className={`desktop-icon folder`}>
-        <img src={this.props.item.open ? Icons.directory_open : Icons.directory_closed} />
-        <span>{this.props.item.name.length > 10 ? `${this.props.item.name.substring(0, 10)}...` : this.props.item.name}</span>
+        <img draggable={false} src={this.props.item.open ? Icons.directory_open : Icons.directory_closed} />
+        <span>{this.props.item.name.length > 15 ? `${this.props.item.name.substring(0, 15)}...` : this.props.item.name}</span>
       </a>
     )
   }

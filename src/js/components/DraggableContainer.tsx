@@ -6,7 +6,7 @@ import { searchTree } from "../Store";
 
 @inject('store')
 @observer
-export default class DraggableContainer extends React.Component<{ store?: any }> {
+export default class DraggableContainer extends React.Component<{ store?: any, draggableBounds?: string }> {
   @observable dragged: boolean = false;
 
   handleStart = (e, ui) => {
@@ -49,7 +49,8 @@ export default class DraggableContainer extends React.Component<{ store?: any }>
 
   render () {
     return (
-      <Draggable 
+      <Draggable
+        bounds={this.props.draggableBounds}
         defaultClassName={`explorer-item react-draggable`} 
         onDrag={this.handleDrag} 
         onStart={this.handleStart} 

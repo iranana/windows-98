@@ -46,8 +46,11 @@ body {
   box-shadow: 1px 1px 0 1px #000, -1px -1px 0 1px #dfdfdf;
 }
 
-#start-menu {
+//
+//
+//
 
+#start-menu {
   button {
     text-indent: -999px;
     background: url("../img/layout/start_button.png") no-repeat;
@@ -128,9 +131,9 @@ body {
 
 .desktop-icon {
   display: inline-block;
-  width: 36px;
   margin: 20px;
   position: relative;
+  cursor: pointer;
 
   &.react-draggable-dragging {
     z-index: 9999;
@@ -148,9 +151,9 @@ body {
   }
 }
 
-.focussed {
-  z-index: 9999 !important;
-}
+//
+//
+//
 
 .explorer-dialog {
   display: flex;
@@ -214,12 +217,21 @@ body {
 
   .explorer-item {
     position: relative;
+    cursor: pointer;
 
     &.react-draggable-dragging {
       z-index: 99999;
     }
   }
 }
+
+.focussed {
+  z-index: 9999 !important;
+}
+
+//
+//
+//
 
 .react-resizable {
   position: relative;

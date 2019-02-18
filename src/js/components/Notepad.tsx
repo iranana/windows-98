@@ -7,8 +7,8 @@ export default class Notepad extends React.Component<any> {
 
   render () {
     return (
-      <div style={{ maxWidth: "480px" }}>
-        <textarea defaultValue={this.props.appInstance.data}></textarea>
+      <div style={{ minWidth: "480px" }}>
+        <textarea style={{ width: "100%" }} rows={20} className="draggable-cancel" defaultValue={this.props.appInstance.data}></textarea>
       </div>
     )
   }

@@ -33,29 +33,30 @@ export default class Explorer extends React.Component<IProps> {
 
     if (currentFolder) {
       return (
-        <Draggable defaultClassName={`explorer-dialog react-draggable ${this.props.explorerInstance.inFocus ? "focussed" : ""}`} cancel={".react-resizable-handle"}>
+        <Draggable bounds="parent" defaultPosition={{x: (this.props.store.explorerInstances.length * 50), y: (this.props.store.explorerInstances.length * 50)}} defaultClassName={`explorer-dialog react-draggable ${this.props.explorerInstance.inFocus ? "focussed" : ""}`} cancel={".react-resizable-handle"}>
           <div onClick={this.setInstanceFocus}>
             <ResizableBox width={640} height={480} minConstraints={[100, 100]}>     
-                <header>
-                  <p>{currentFolder.name}</p>
-                  <div className="explorer-dialog-controls">
-                    <a onClick={this.close}>X</a>
-                  </div>
-                </header>
-                <div className="explorer-body">
-                  <div className="explorer-folder-tree">
-                    <ul>
-                      {this.props.store.desktop.map((item, i) => (
-                        <FolderTree item={item} key={i} explorerInstance={this.props.explorerInstance} />
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="explorer-folder-contents" data-id={currentFolder.id}>
-                    {currentFolder && (
-                      directoryFactory({ items: currentFolder.children, explorerInstance: this.props.explorerInstance })
-                    )}
-                  </div>
+              <header>
+                <p>{currentFolder.name}</p>
+                <div className="explorer-dialog-controls">
+                  {this.props.explorerInstance.stack.length > 1 ? <a onClick={this.goBack}>Back</a> : null}
+                  <a onClick={this.close}>X</a>
                 </div>
+              </header>
+              <div className="explorer-body">
+                <div className="explorer-folder-tree">
+                  <ul>
+                    {this.props.store.desktop.map((item, i) => (
+                      <FolderTree item={item} key={i} explorerInstance={this.props.explorerInstance} />
+                    ))}
+                  </ul>
+                </div>
+                <div className="explorer-folder-contents" data-id={currentFolder.id}>
+                  {currentFolder && (
+                    directoryFactory({ items: currentFolder.children, explorerInstance: this.props.explorerInstance })
+                  )}
+                </div>
+              </div>
             </ResizableBox>
           </div>
         </Draggable>

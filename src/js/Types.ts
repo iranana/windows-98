@@ -4,7 +4,7 @@ export type Folder = {
   name: string;
   open?: boolean;
   minimised: boolean;
-  children: Array<Folder | File>;
+  children: Array<Folder | AppShortcut>;
   parent: number;
 }
 

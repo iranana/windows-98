@@ -23,14 +23,14 @@ export default class App extends React.Component<{}> {
         <Provider store={this.store}>
           <>
             <div id="desktop">
-              {directoryFactory({ items: this.store.desktop, newInstance: true, explorerInstance: null })}
+              {directoryFactory({ items: this.store.desktop, newInstance: true, explorerInstance: null, draggableBounds: "parent" })}
               
               {this.store.explorerInstances.map((instance, i) => (
                 <Explorer key={i} explorerInstance={instance} />
               ))}
 
               {this.store.appInstances.map((instance, i) => (
-                <AppContainer appInstance={instance} />
+                <AppContainer key={i} appInstance={instance} />
               ))}
             </div>
             <TaskBar />
