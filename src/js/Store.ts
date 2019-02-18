@@ -1,104 +1,29 @@
 import { observable, action, toJS } from "mobx";
-import * as Files from "../files/img/*.jpg";
 import Nes from "./components/Nes";
 import uuidv1 from "uuid/v1";
 import ImageViewer from "./components/ImageViewer";
-
-interface Folder {
-  type: "folder";
-  id: number;
-  name: string;
-  minimised: boolean;
-  children: Array<Folder | File>;
-  parent: number;
-}
-
-interface File {
-  type: "file" | "image";
-  id: number;
-  name: string;
-  open: boolean;
-  minimised: boolean;
-  parent: number;
-  url: string;
-}
+import Notepad from "./components/Notepad";
+import { AppInstance, ExplorerInstance } from "./Types";
+import { DesktopItems } from "./Files";
+import { Folder } from "./Types";
 
 export default class Store {
-  @observable currentView: {
-    name: string,
-    component: React.StatelessComponent | React.ComponentClass
-  } = null;
-  @observable appInstances: any = [];
-  @observable explorerInstances: Array<{ id: string, stack: Folder[], inFocus: boolean, minimized: boolean, maximized: boolean }> = [];
-  @observable desktop: Array<Folder | File> = [
-    {
-      type: "folder",
-      id: 1,
-      name: "Carrots",
-      minimised: false,
-      parent: null,
-      children: [
-        {
-          type: "image",
-          id: 2,
-          name: "testImage.jpg", 
-          url: Files.testImage,
-          open: false,
-          minimised: false,
-          parent: 1
-        },
-        {
-          type: "folder",
-          id: 3,
-          name: "Cats",
-          minimised: false,
-          children: [],
-          parent: 1
-        },
-        {
-          type: "folder",
-          id: 5,
-          name: "Cucumbers",
-          minimised: false,
-          parent: 1,
-          children: [
-            {
-              type: "folder",
-              id: 99,
-              name: "Cucumber Seeds",
-              minimised: false,
-              children: [],
-              parent: 5
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: "folder",
-      id: 4,
-      name: "Pictures",
-      minimised: false,
-      parent: null,
-      children: [
-        {
-          type: "folder",
-          id: 88,
-          name: "Cat Pictures",
-          minimised: false,
-          children: [],
-          parent: 4
-        }
-      ]
-    }
-  ];
+  @observable appInstances: AppInstance[] = [];
+  @observable explorerInstances: ExplorerInstance[] = [];
+  @observable desktop = DesktopItems;
 
-  // open app
-  @action createAppInstance (app, name, data) {
+  /**
+   * Creates a new instance of an app.
+   * @param app - React component to render
+   * @param name - Name of app
+   * @param data - Data for app (todo better definitions)
+   */
+  @action createAppInstance (app: React.StatelessComponent | React.ComponentClass, name: string, data: any) {
+    this.unfocusExplorerInstances();
     this.appInstances.push({
       id: uuidv1(),
-      inFocus: false,
-      minimized: false,
+      inFocus: true,
+      minimised: false,
       maximized: false,
       app: app,
       name: name,
@@ -106,63 +31,124 @@ export default class Store {
     });
   }
 
-  @action launchNes () {
-    this.createAppInstance(Nes, "NES Emulator", null)
-  }
-
-  @action launchImageViewer(image: File) {
-    this.createAppInstance(ImageViewer, "Image Viewer", image);
-  }
-
-  @action closeApp (appInstance) {
+  /**
+   * Kills a given appInstance
+   * @param appInstance 
+   */
+  @action closeApp (appInstance: AppInstance) {
     const instanceIndex = this.appInstances.findIndex(instance => instance === appInstance);
     if (instanceIndex !== -1) {
       this.appInstances.splice(instanceIndex, 1);
     }
   }
 
-  @action setAppInstanceFocus (appInstance) {
+  /**
+   * Focuses a given appInstance
+   * @param appInstance 
+   */
+  @action focusAppInstance (appInstance: AppInstance) {
     this.appInstances.forEach(inst => inst !== appInstance ? inst.inFocus = false : null);
     appInstance.inFocus = true;
   }
 
-  // new explorer
-  @action createNew (item) {
-    const existingInstance = this.explorerInstances.find(instance => instance.id === item.id);
+  /**
+   * Launches notepad!
+   * @param document 
+   */
+  @action launchNotepad (document) {
+    this.createAppInstance(Notepad, "Notepad", document);
+  }
 
-    if (existingInstance) {
-      //return false
-    }
+  /**
+   * Launches NES!
+   * @param rom 
+   */
+  @action launchNes (rom) {
+    this.createAppInstance(Nes, "NES Emulator", rom);
+  }
+
+  /**
+   * Launches ImageViewer!
+   * @param image 
+   */
+  @action launchImageViewer(image: File) {
+    this.createAppInstance(ImageViewer, "Image Viewer", image);
+  }
+
+  /**
+   * Creates a given explorerInstance
+   * @param item 
+   */
+  @action createExplorerInstance (item: Folder) {
+    item.open = true;
+    this.unfocusAppInstances();
 
     this.explorerInstances.push({
       id: item.id,
       stack: [ item ],
-      inFocus: false,
-      minimized: false,
+      inFocus: true,
+      minimised: false,
       maximized: false
     });
   }
 
-  @action openFolder (item, instance) {
-    instance.stack.push(item);
+  /**
+   * Kills a given explorerInstance
+   * @param instance 
+   */
+  @action closeExplorer (explorerInstance: ExplorerInstance) {
+    const item = searchTree(this.desktop, explorerInstance.id);
+    item.open = false;
+    this.explorerInstances.splice(this.explorerInstances.indexOf(explorerInstance), 1);
   }
 
-  @action closeExplorer (instance) {
-    this.explorerInstances.splice(this.explorerInstances.indexOf(instance), 1);
+  /**
+   * Opens a folder, pushing it to the instance's stack.
+   * @param item 
+   * @param explorerInstance 
+   */
+  @action openFolder (item: Folder, explorerInstance: ExplorerInstance) {
+    explorerInstance.stack.push(item);
   }
 
-  @action goBack (instance) {
-    instance.stack.pop();
+  /**
+   * Go back through an explorerInstance's stack
+   * @param explorerInstance - The instance we're moving back in
+   */
+  @action goBack (explorerInstance: ExplorerInstance) {
+    explorerInstance.stack.pop();
   }
 
-  @action setInstanceFocus (instance) {
-    this.appInstances.forEach(inst => inst.inFocus = false);
+  /**
+   * Focuses a given explorerInstance. Defocuses all others.
+   * @param instance - The instance whose focus we are settings
+   */
+  @action focusExplorerInstance (instance) {
+    this.unfocusAppInstances();
     this.explorerInstances.forEach(inst => inst !== instance ? inst.inFocus = false : null);
     instance.inFocus = true;
   }
 
-  // todo fix the mutations
-  @action moveFolder (folderToMove, targetFolderId) {
+  /**
+   * Unfocus all appInstances.
+   */
+  @action unfocusAppInstances () {
+    this.appInstances.forEach(inst => inst.inFocus = false);
+  }
+  
+  /**
+   * Unfocus all explorerInstances.
+   */
+  @action unfocusExplorerInstances () {
+    this.explorerInstances.forEach(inst => inst.inFocus = false);
+  }
+
+  /**
+   * Move a folder from one directory to another.
+   * @param folderToMove - The folder to move
+   * @param targetFolderId - Id of folder to move to
+   */
+  @action moveFolder (folderToMove: Folder, targetFolderId: string) {
     let targetFolder = searchTree(this.desktop, parseInt(targetFolderId));
 
     if (targetFolder) {
@@ -181,17 +167,14 @@ export default class Store {
       }
     }
   }
-
-  // NES
-  @action loadNes () {
-    this.currentView = {
-      name: "nes",
-      component: Nes
-    }
-  }
 }
 
-export function searchTree (items, id) {
+/**
+ * Find item in tree of files.
+ * @param items - Items to traverse
+ * @param id - Id to find
+ */
+export function searchTree (items: Array<any>, id: number) {
   for (let i = 0; i < items.length; i++) {
     if (items[i].id === id) {
       return items[i];

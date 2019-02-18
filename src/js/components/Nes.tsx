@@ -1,7 +1,6 @@
 import React from "react";
 import NesNes from "nesnes";
 import * as NesRoms from "../../files/roms/nes/*.nes";
-import Draggable from "react-draggable";
 import { inject, observer } from "mobx-react";
 
 @inject('store')
@@ -12,7 +11,8 @@ export default class Nes extends React.Component<any> {
 
   componentDidMount () {
     this.nes = new NesNes(this.canvas.current);
-    this.nes.load(NesRoms.SuperMarioBros, true);
+    console.log(this.props);
+    this.nes.load(this.props.appInstance.data, true);
   }
 
   componentWillUnmount () {

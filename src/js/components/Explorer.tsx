@@ -1,83 +1,39 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
-import { action, toJS, observable } from "mobx";
 import Draggable from "react-draggable";
 import { directoryFactory } from "../Utils";
 import { ResizableBox } from "react-resizable";
+import FolderTree from "./FolderTree";
+import Store from "../Store";
+import { ExplorerInstance } from "../Types";
 
-@inject('store')
-@observer
-class FolderTree extends React.Component<{ item: any, store?: any, instance: any }> {
-  @observable expanded: boolean = true;
-
-  @action open = (e, item) => {
-    e.stopPropagation();
-    switch (item.type) {
-      case "folder":
-        this.props.store.openFolder(item, this.props.instance);
-        break;
-      case "file":
-        console.log('todo');
-        break;
-    } 
-  }
-
-  @action toggleExpand = () => {
-    this.expanded = !this.expanded;
-  }
-
-  render () {
-    const children = this.props.item.children;
-
-    return (
-      <>
-        <li>
-          {children && children.length ? <a onClick={this.toggleExpand}>+</a> : null} 
-          <span onDoubleClick={(e) => this.open(e, this.props.item)}>{this.props.item.name}</span>
-          {children && (
-            <ul style={{ display: this.expanded ? "block" : "none" }}>
-              {children.map((item, j) => <FolderTree item={item} instance={this.props.instance} key={j} />)}
-            </ul>
-          )}
-        </li>
-      </>
-    )
-  }
+type IProps = {
+  store?: Store,
+  explorerInstance: ExplorerInstance
 }
 
 @inject('store')
 @observer
-export default class Explorer extends React.Component<{ store?: any, instance: any }> {
+export default class Explorer extends React.Component<IProps> {
 
   close = () => {
-    this.props.store.closeExplorer(this.props.instance);
-  }
-
-  open = (item) => {
-    switch (item.type) {
-      case "folder":
-        this.props.store.openFolder(item, this.props.instance);
-        break;
-      case "file":
-        console.log('todo');
-        break;
-    } 
+    this.props.store.closeExplorer(this.props.explorerInstance);
   }
 
   goBack = () => {
-    this.props.store.goBack(this.props.instance);
+    this.props.store.goBack(this.props.explorerInstance);
   }
 
   setInstanceFocus = () => {
-    this.props.store.setInstanceFocus(this.props.instance);
+    this.props.store.focusExplorerInstance(this.props.explorerInstance);
   }
 
   render () {
-    const currentFolder = this.props.instance.stack[this.props.instance.stack.length - 1];
+    const currentFolder = this.props.explorerInstance.stack[this.props.explorerInstance.stack.length - 1];
 
     if (currentFolder) {
       return (
-        <Draggable defaultClassName={`explorer-dialog react-draggable ${this.props.instance.inFocus ? "focussed" : ""}`} cancel={".react-resizable-handle"}>
+        <Draggable defaultClassName={`explorer-dialog react-draggable ${this.props.explorerInstance.inFocus ? "focussed" : ""}`} cancel={".react-resizable-handle"}>
           <div onClick={this.setInstanceFocus}>
             <ResizableBox width={640} height={480} minConstraints={[100, 100]}>     
                 <header>
@@ -90,13 +46,13 @@ export default class Explorer extends React.Component<{ store?: any, instance: a
                   <div className="explorer-folder-tree">
                     <ul>
                       {this.props.store.desktop.map((item, i) => (
-                        <FolderTree item={item} key={i} instance={this.props.instance} />
+                        <FolderTree item={item} key={i} explorerInstance={this.props.explorerInstance} />
                       ))}
                     </ul>
                   </div>
-                  <div className="explorer-folder-contents" data-folder={currentFolder.id}>
+                  <div className="explorer-folder-contents" data-id={currentFolder.id}>
                     {currentFolder && (
-                      directoryFactory({ items: currentFolder.children, instance: this.props.instance })
+                      directoryFactory({ items: currentFolder.children, explorerInstance: this.props.explorerInstance })
                     )}
                   </div>
                 </div>
