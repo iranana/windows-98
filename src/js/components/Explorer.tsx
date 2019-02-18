@@ -78,7 +78,7 @@ export default class Explorer extends React.Component<{ store?: any, instance: a
     if (currentFolder) {
       return (
         <Draggable defaultClassName={`explorer-dialog react-draggable ${this.props.instance.inFocus ? "focussed" : ""}`} cancel={".react-resizable-handle"}>
-          <div onMouseDown={() => console.log('mouseodnw')} onClick={this.setInstanceFocus}>
+          <div onClick={this.setInstanceFocus}>
             <ResizableBox width={640} height={480} minConstraints={[100, 100]}>     
                 <header>
                   <p>{currentFolder.name}</p>

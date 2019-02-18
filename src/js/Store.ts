@@ -1,6 +1,8 @@
 import { observable, action, toJS } from "mobx";
-import image2base64 from "image-to-base64";
-import * as Files from "../img/files/*.jpg";
+import * as Files from "../files/img/*.jpg";
+import Nes from "./components/Nes";
+import uuidv1 from "uuid/v1";
+import ImageViewer from "./components/ImageViewer";
 
 interface Folder {
   type: "folder";
@@ -22,8 +24,12 @@ interface File {
 }
 
 export default class Store {
+  @observable currentView: {
+    name: string,
+    component: React.StatelessComponent | React.ComponentClass
+  } = null;
+  @observable appInstances: any = [];
   @observable explorerInstances: Array<{ id: string, stack: Folder[], inFocus: boolean, minimized: boolean, maximized: boolean }> = [];
-  @observable explorerState = [];
   @observable desktop: Array<Folder | File> = [
     {
       type: "folder",
@@ -85,8 +91,42 @@ export default class Store {
         }
       ]
     }
-  ]
+  ];
 
+  // open app
+  @action createAppInstance (app, name, data) {
+    this.appInstances.push({
+      id: uuidv1(),
+      inFocus: false,
+      minimized: false,
+      maximized: false,
+      app: app,
+      name: name,
+      data: data
+    });
+  }
+
+  @action launchNes () {
+    this.createAppInstance(Nes, "NES Emulator", null)
+  }
+
+  @action launchImageViewer(image: File) {
+    this.createAppInstance(ImageViewer, "Image Viewer", image);
+  }
+
+  @action closeApp (appInstance) {
+    const instanceIndex = this.appInstances.findIndex(instance => instance === appInstance);
+    if (instanceIndex !== -1) {
+      this.appInstances.splice(instanceIndex, 1);
+    }
+  }
+
+  @action setAppInstanceFocus (appInstance) {
+    this.appInstances.forEach(inst => inst !== appInstance ? inst.inFocus = false : null);
+    appInstance.inFocus = true;
+  }
+
+  // new explorer
   @action createNew (item) {
     const existingInstance = this.explorerInstances.find(instance => instance.id === item.id);
 
@@ -116,6 +156,7 @@ export default class Store {
   }
 
   @action setInstanceFocus (instance) {
+    this.appInstances.forEach(inst => inst.inFocus = false);
     this.explorerInstances.forEach(inst => inst !== instance ? inst.inFocus = false : null);
     instance.inFocus = true;
   }
@@ -138,6 +179,14 @@ export default class Store {
         const root = this.desktop.find(item => item.id === folderToMove.id);
         this.desktop.splice(this.desktop.indexOf(root), 1);
       }
+    }
+  }
+
+  // NES
+  @action loadNes () {
+    this.currentView = {
+      name: "nes",
+      component: Nes
     }
   }
 }

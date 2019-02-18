@@ -21,11 +21,9 @@ export default class DraggableContainer extends React.Component<{ store?: any }>
   handleStop = (e, ui) => {
     if (this.dragged) {
       this.dragged = false;
-
-      // UGUGUGUGUGLLLLLLLYYYY FIX THIS HORROR
+      // todo fix the horror
       const folderId = ui.node.childNodes[0].dataset.folder;
       const parentId = ui.node.childNodes[0].dataset.parent;
-
       const targetElements = document.elementsFromPoint(e.clientX, e.clientY);
       const validFolder = targetElements.find(element => element.classList.contains('folder') && element !== ui.node.childNodes[0]) as HTMLElement;
       const validDirectory = targetElements.find((element: HTMLElement) => element.classList.contains('explorer-folder-contents') && element.dataset.folder !== folderId && element.dataset.folder !== parentId) as HTMLElement;
