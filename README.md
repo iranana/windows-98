@@ -1,0 +1,4 @@
+- build with `parcel ./src/index.html`
+- demo here - http://test.com
+- having worked through this idea, i realize it needs refactoring
+- some of the libraries used aren't really suited for their purpose, they need replacing
