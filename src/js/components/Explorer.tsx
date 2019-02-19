@@ -39,8 +39,8 @@ export default class Explorer extends React.Component<IProps> {
               <header>
                 <p>{currentFolder.name}</p>
                 <div className="explorer-dialog-controls">
-                  {this.props.explorerInstance.stack.length > 1 ? <a onClick={this.goBack}>Back</a> : null}
-                  <a onClick={this.close}>X</a>
+                  {this.props.explorerInstance.stack.length > 1 ? <button onClick={this.goBack}>Back</button> : null}
+                  <button onClick={this.close}>X</button>
                 </div>
               </header>
               <div className="explorer-body">

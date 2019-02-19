@@ -38,9 +38,9 @@ export default class FolderTree extends React.Component<IProps> {
     return (
       <>
         <li>
-          {children && children.length ? <a onClick={this.toggleExpand}>+</a> : null} 
+          {children && children.length ? <button onClick={this.toggleExpand}>{this.expanded ? "-" : "+"}</button> : null} 
           <span onDoubleClick={(e) => this.open(e, this.props.item)}>
-            <img draggable={false} src={this.props.item.icon ? this.props.item.icon : this.expanded ? Icons.directory_open : Icons.directory_closed} style={{ maxWidth: "24px", height: "auto" }} />
+            <img draggable={false} src={this.props.item.icon ? this.props.item.icon : this.expanded ? Icons.directory_open : Icons.directory_closed} style={{ maxWidth: "18px", height: "auto" }} />
             {this.props.item.name}
           </span>
           {children && (

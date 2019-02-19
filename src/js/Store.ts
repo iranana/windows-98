@@ -6,6 +6,7 @@ import Notepad from "./components/Notepad";
 import { AppInstance, ExplorerInstance } from "./Types";
 import { DesktopItems } from "./Files";
 import { Folder } from "./Types";
+import PDFViewer from "./components/PDFViewer";
 
 export default class Store {
   @observable appInstances: AppInstance[] = [];
@@ -71,8 +72,16 @@ export default class Store {
    * Launches ImageViewer!
    * @param image 
    */
-  @action launchImageViewer(image: File) {
+  @action launchImageViewer (image: File) {
     this.createAppInstance(ImageViewer, "Image Viewer", image);
+  }
+
+  /**
+   * Launches PDF viewer!
+   * @param item 
+   */
+  @action launchPDFViewer (pdf: File) {
+    this.createAppInstance(PDFViewer, "PDF Viewer", pdf);
   }
 
   /**

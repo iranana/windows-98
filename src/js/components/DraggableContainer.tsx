@@ -20,14 +20,19 @@ export default class DraggableContainer extends React.Component<{ store?: any, d
   handleStop = (e, ui) => {
     if (this.dragged) {
       this.dragged = false;
+
       // todo fix the horror
       const folderId = ui.node.childNodes[0].dataset.id;
       const parentId = ui.node.childNodes[0].dataset.parent;
       const targetElements = document.elementsFromPoint(e.clientX, e.clientY);
       const validFolder = targetElements.find(element => element.classList.contains('folder') && element !== ui.node.childNodes[0]) as HTMLElement;
-      const validDirectory = targetElements.find((element: HTMLElement) => element.classList.contains('explorer-folder-contents') && element.dataset.id !== folderId && element.dataset.id !== parentId) as HTMLElement;
+      const validDirectory = targetElements.find((element: HTMLElement) => { 
+        return element.classList.contains('explorer-folder-contents') && element.dataset.id !== parentId
+       }) as HTMLElement;
       const directory = targetElements.find((element: HTMLElement) => element.classList.contains("explorer-folder-contents"));
       const desktop = targetElements.find(element => element.id === "desktop");
+
+       console.log(validDirectory);
 
       let thisFolder = searchTree(this.props.store.desktop, parseInt(folderId));
 
@@ -55,7 +60,7 @@ export default class DraggableContainer extends React.Component<{ store?: any, d
         onDrag={this.handleDrag} 
         onStart={this.handleStart} 
         onStop={this.handleStop}>
-        <div style={{ display: "inline-block" }}>{this.props.children}</div>
+        <div className="draggable-item-container">{this.props.children}</div>
       </Draggable>
     )
   }

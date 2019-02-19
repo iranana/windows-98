@@ -23,7 +23,19 @@ export default class Nes extends React.Component<any> {
 
   render () {
     return (
-      <canvas width="256" height="225" ref={this.canvas} />
+      <>
+        <canvas width="256" height="225" ref={this.canvas} />
+        <div>
+          <p><strong>Controls:</strong></p>
+          <ul>
+            <li>Arrows = d-pad</li>
+            <li>Shift = select</li>
+            <li>Return = start</li>
+            <li>x = B</li>
+            <li>z = A</li>
+          </ul>
+        </div>
+      </>
     )
   }
 }

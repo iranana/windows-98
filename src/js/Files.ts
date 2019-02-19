@@ -2,6 +2,7 @@ import * as Files from "../files/img/*.jpg";
 import * as Icons from "../img/icons/*.ico";
 import * as GameIcons from "../img/game_icons/*.png";
 import * as NesRoms from "../files/roms/nes/*.nes";
+import * as PDFs from "../files/pdfs/*.pdf";
 import { Folder, AppShortcut } from "./Types";
 import { RootStore } from "./App";
 
@@ -19,7 +20,35 @@ export const DesktopItems: Array<Folder | AppShortcut> = [
         name: "Yoshi",
         minimised: false,
         parent: 1,
-        children: []
+        children: [
+          {
+            type: "appShortcut",
+            icon: Icons.kodak_imaging_file,
+            id: 8983224,
+            name: "yoshi1.jpg",
+            minimised: false,
+            parent: 11,
+            action: () => RootStore.launchImageViewer(Files.yoshi1)
+          },
+          {
+            type: "appShortcut",
+            icon: Icons.kodak_imaging_file,
+            id: 765765,
+            name: "yoshi2.jpg",
+            minimised: false,
+            parent: 11,
+            action: () => RootStore.launchImageViewer(Files.yoshi2)
+          },
+          {
+            type: "appShortcut",
+            icon: Icons.kodak_imaging_file,
+            id: 128748,
+            name: "yoshi3.jpg",
+            minimised: false,
+            parent: 11,
+            action: () => RootStore.launchImageViewer(Files.yoshi3)
+          }
+        ]
       },
       {
         type: "folder",
@@ -27,7 +56,26 @@ export const DesktopItems: Array<Folder | AppShortcut> = [
         name: "Isla",
         minimised: false,
         parent: 1,
-        children: []
+        children: [
+          {
+            type: "appShortcut",
+            icon: Icons.kodak_imaging_file,
+            id: 89845224,
+            name: "isla1.jpg",
+            minimised: false,
+            parent: 12,
+            action: () => RootStore.launchImageViewer(Files.isla1)
+          },
+          {
+            type: "appShortcut",
+            icon: Icons.kodak_imaging_file,
+            id: 89845443224,
+            name: "isla2.jpg",
+            minimised: false,
+            parent: 12,
+            action: () => RootStore.launchImageViewer(Files.isla2)
+          }
+        ]
       }
     ]
   },
@@ -39,14 +87,23 @@ export const DesktopItems: Array<Folder | AppShortcut> = [
     parent: null,
     children: [
       {
-        icon: Icons.notepad_file,
+        icon: Icons.document,
         type: "appShortcut",
-        id: 12123123123,
-        name: "todo.txt",
+        id: 32434,
+        name: "RD400.pdf",
         minimised: false,
-        parent: null,
-        action: () => RootStore.launchNotepad(TodoDocument)
+        parent: 4,
+        action: () => RootStore.launchPDFViewer(PDFs.RD400C)
       },
+      {
+        icon: Icons.document,
+        type: "appShortcut",
+        id: 9375,
+        name: "RD400_US_Wiring_Diagram.pdf",
+        minimised: false,
+        parent: 4,
+        action: () => RootStore.launchPDFViewer(PDFs.RD400USwiringdiagram)
+      }
     ]
   },
   {
@@ -89,30 +146,61 @@ export const DesktopItems: Array<Folder | AppShortcut> = [
     type: "appShortcut",
     icon: Icons.kodak_imaging_file,
     id: 799,
-    name: "cat.jpg",
+    name: "bike.jpg",
     minimised: false,
     parent: null,
-    action: () => RootStore.launchImageViewer(Files.testImage)
+    action: () => RootStore.launchImageViewer(Files.bike)
+  },
+  {
+    type: "appShortcut",
+    icon: Icons.kodak_imaging_file,
+    id: 4982,
+    name: "gt750_1.jpg",
+    minimised: false,
+    parent: null,
+    action: () => RootStore.launchImageViewer(Files.gt750_1)
+  },
+  {
+    type: "appShortcut",
+    icon: Icons.kodak_imaging_file,
+    id: 7938299,
+    name: "gt750_2.jpg",
+    minimised: false,
+    parent: null,
+    action: () => RootStore.launchImageViewer(Files.gt750_2)
   }
 ];
 
 const AboutMeDocument = `
-ABOUT
+ABOUT ME:
 
-An experiement to create a 'windows-like' UI in the browser. Currently based around two key states:
+------------------------
+
+I have a 10 year old cat named Yoshi and a 4 month old puppy called Isla. She's a pap x chi. You can find some photos of them in the "Pictures" folder.
+ 
+I also am strongly sidetracked by 70s race bikes, particularly two-strokes. My dream collectors bike is a Yamaha TZ750. You can find some workshop manuals in "My Documents".
+
+ABOUT THIS THING:
+
+------------------------
+
+It's experiement to create a 'windows-like' UI in the browser. Currently based around two key states:
 
 1. ExplorerInstances - all instances of the "explorer window".
 2. AppInstances - all instances of any app (e.g. NES, Notepad).
 
-UI is product of these states, allows for any number of Explorers/Apps to be used. 
-Folders and files can be dragged and dropped between folders. Honestly it's kind of bizarre and unlike anything I've built before.
+Folders and files can be dragged and dropped between folders, kind of. You can't drop onto the desktop (yet).
+Honestly it's kind of bizarre and unlike anything I've built before, but that's the point.
 `
 
 const TodoDocument = `
 TODO:
 
+------------------------
+
 - better z-indexing for focus
-- scaling of NES? swap emu? doesn't handle multiple instances.
+- better definitions of file "types" to automagically render the right app
+- scaling of NES? swap emu? doesn't handle multiple instances, events are bound to window.
 - use localStorage for file system
 - context menu?
 - taskbar and minimised state

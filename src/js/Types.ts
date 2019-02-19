@@ -2,6 +2,8 @@ export type Folder = {
   type: "folder";
   id: number;
   name: string;
+  openIcon?: string;
+  closedIcon?: string;
   open?: boolean;
   minimised: boolean;
   children: Array<Folder | AppShortcut>;
@@ -15,7 +17,7 @@ export type AppShortcut = {
   name: string,
   open?: boolean;
   minimised: false,
-  parent: null,
+  parent: number,
   action: any
 }
 

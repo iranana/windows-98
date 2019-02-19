@@ -17,13 +17,13 @@ export const directoryFactory = ({ items, newInstance, explorerInstance, draggab
       case "folder":
         return (
           <DraggableContainer draggableBounds={draggableBounds} key={item.id}>
-            <Folder key={i} item={item} newInstance={newInstance} explorerInstance={explorerInstance} />
+            <Folder item={item} newInstance={newInstance} explorerInstance={explorerInstance} />
           </DraggableContainer>
         )
       case "appShortcut":
         return (
           <DraggableContainer draggableBounds={draggableBounds} key={item.id}>
-            <AppShortcut key={i} item={item} />
+            <AppShortcut item={item} />
           </DraggableContainer>
         )
     }

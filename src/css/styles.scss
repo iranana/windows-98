@@ -22,6 +22,11 @@ body {
   width: 100%;
   height: 100%;
   background: #008080;
+
+  > .explorer-item {
+    float: left;
+    clear: left;
+  }
 }
 
 #taskbar {
@@ -131,13 +136,9 @@ body {
 
 .desktop-icon {
   display: inline-block;
-  margin: 20px;
+  margin: 10px;
   position: relative;
   cursor: pointer;
-
-  &.react-draggable-dragging {
-    z-index: 9999;
-  }
 
   img {
     width: 24px;
@@ -151,6 +152,10 @@ body {
   }
 }
 
+.react-draggable-dragging {
+  z-index: 99999999 !important; // all the z-indexes!@!@
+}
+
 //
 //
 //
@@ -159,6 +164,8 @@ body {
   display: flex;
   flex-direction: column;
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 999;
   @include dialog();
 
@@ -166,7 +173,10 @@ body {
     height: 25px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background: linear-gradient(to right, #020b87, #0f83cf);
+    padding: 3px;
+    box-sizing: border-box;
 
     p {
       margin: 0;
@@ -187,6 +197,8 @@ body {
   }
 
   .explorer-folder-tree {
+    padding: 10px;
+    box-sizing: border-box;
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 200px;
@@ -213,6 +225,10 @@ body {
     background: #fff;
     margin-left: 4px;
     border: 1px solid #7d7d7d;
+
+    .draggable-item-container {
+      display: inline-block;
+    }
   }
 
   .explorer-item {
