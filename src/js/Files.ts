@@ -135,12 +135,12 @@ export const DesktopItems: Array<Folder | AppShortcut> = [
   },
   {
     type: "appShortcut",
-    icon: GameIcons.AddamsFamily,
+    icon: GameIcons.ParasolStars,
     id: 71238,
-    name: "Addams Family",
+    name: "Parasol Stars",
     minimised: false,
     parent: null,
-    action: () => RootStore.launchNes(NesRoms.AddamsFamilyThe)
+    action: () => RootStore.launchNes(NesRoms.ParasolStars)
   },
   {
     type: "appShortcut",
@@ -172,17 +172,11 @@ export const DesktopItems: Array<Folder | AppShortcut> = [
 ];
 
 const AboutMeDocument = `
-ABOUT ME:
-
-------------------------
-
-I have a 10 year old cat named Yoshi and a 4 month old puppy called Isla. She's a pap x chi. You can find some photos of them in the "Pictures" folder.
- 
-I also am strongly sidetracked by 70s race bikes, particularly two-strokes. My dream collectors bike is a Yamaha TZ750. You can find some workshop manuals in "My Documents".
-
 ABOUT THIS THING:
 
 ------------------------
+
+Play some Mario!!
 
 It's experiement to create a 'windows-like' UI in the browser. Currently based around two key states:
 
