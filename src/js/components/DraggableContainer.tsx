@@ -31,9 +31,6 @@ export default class DraggableContainer extends React.Component<{ store?: any, d
        }) as HTMLElement;
       const directory = targetElements.find((element: HTMLElement) => element.classList.contains("explorer-folder-contents"));
       const desktop = targetElements.find(element => element.id === "desktop");
-
-       console.log(validDirectory);
-
       let thisFolder = searchTree(this.props.store.desktop, parseInt(folderId));
 
       if (validFolder) {
