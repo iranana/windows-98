@@ -1,5 +1,5 @@
 - build with `parcel ./src/index.html`
-- demo here - http://windows-98.s3-website-us-east-1.amazonaws.com/
+- demo here - http://windows-98-v2.s3-website-ap-southeast-2.amazonaws.com/
 - having worked through this idea, i realize it needs refactoring
 - some of the libraries used aren't really suited for their purpose, they need replacing
 - i have only tried this on chrome
